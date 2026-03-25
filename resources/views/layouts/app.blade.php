@@ -9,12 +9,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    {{-- Google Fonts: Press Start 2P (pixel/diary display) + Courier Prime (body) --}}
+    {{-- Google Fonts: Press Start 2P (pixel/diary display) + Courier Prime (body) + Kiwisoda --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Kiwisoda&display=swap" rel="stylesheet">
 
-    {{-- Material Symbols for navigation arrows --}}
+    {{-- Material Symbols (single font import) --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <style>
@@ -44,9 +44,9 @@
         }
 
         /* ─── Typography helpers ─────────────────────────── */
-        .diary-title  { font-family: 'Courier Prime', 'Courier New', monospace; font-weight: 700; }
+        .diary-title  { font-family: 'Kiwisoda', sans-serif; font-weight: 700; }
         .diary-body   { font-family: 'Courier Prime', 'Courier New', monospace; }
-        .diary-display{ font-family: 'Press Start 2P', monospace; }
+        .diary-display{ font-family: 'Kiwisoda', sans-serif; }
 
         /* ─── Tag pill ───────────────────────────────────── */
         .diary-tag {
@@ -129,9 +129,20 @@
         /* ─── Nav ────────────────────────────────────────── */
         .nav-logo-box {
             border: 2px solid var(--ink);
-            border-radius: 1.2rem;
-            padding: 0.35rem 1.4rem;
+            border-radius: 2rem;
+            padding: 0.5rem 0.75rem;
             display: inline-block;
+        }
+
+        /* ─── Sidebar (removed and replaced by header icons) ────────────────────────────────────── */
+        .main-content {
+            transition: margin-left 0.3s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
         }
 
         /* ─── Drawer ─────────────────────────────────────── */
@@ -140,43 +151,25 @@
 </head>
 <body>
 
-    {{-- ── Navigation ───────────────────────────────────── --}}
-    <nav class="bg-white border-b-2 border-gray-900" x-data="{ open: false }">
-        <div class="content-shell mx-auto px-6 py-4 flex items-center justify-between">
+    {{-- ── Navigation Header ────────────────────────────── --}}
+    <nav class="bg-white border-b-2 border-gray-900" style="height: 73px;">
+        <div class="content-shell mx-auto px-6 py-4 flex items-center justify-between h-full">
 
-            {{-- Hamburger --}}
-            <button @click="open = !open" class="flex flex-col gap-1.5 w-8 h-8 items-center justify-center">
-                <span class="block w-6 h-0.5 bg-gray-900"></span>
-                <span class="block w-6 h-0.5 bg-gray-900"></span>
-                <span class="block w-6 h-0.5 bg-gray-900"></span>
-            </button>
+            {{-- Delete icon (upper left) --}}
+            <a href="{{ route('recipes.trash') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-red-500 transition" title="Trash">delete_history</a>
 
             {{-- Centered Logo --}}
             <a href="{{ route('recipes.index') }}" class="nav-logo-box">
-                <span class="diary-display text-sm text-gray-900 leading-none">Nina's Recipe Diary</span>
+                <span class="diary-display text-4xl text-gray-900 leading-none">Nina's Recipe Diary</span>
             </a>
 
-            {{-- Right spacer (keeps logo centered) --}}
-            <div class="w-8"></div>
-        </div>
-
-        {{-- Slide-down drawer --}}
-        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200"
-             x-transition:enter-start="opacity-0 -translate-y-2"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-150"
-             x-transition:leave-end="opacity-0 -translate-y-2"
-             class="border-t-2 border-gray-900 bg-white">
-            <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col gap-3 diary-body text-base">
-                <a href="{{ route('recipes.index') }}" class="hover:text-amber-700 transition">📖 My Recipes</a>
-                <a href="{{ route('recipes.create') }}" class="hover:text-amber-700 transition">✏️ Add New Recipe</a>
-                <a href="{{ route('recipes.trash') }}" class="hover:text-red-500 transition">🗑 Trash</a>
-            </div>
+            {{-- Add icon (upper right) --}}
+            <a href="{{ route('recipes.create') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-amber-700 transition" title="Add Recipe">add</a>
         </div>
     </nav>
 
-    {{-- ── Everything below the nav sits on bg.png ──────────── --}}
-    <div class="page-bg">
+    {{-- ── Main Content Area ─────────────────────────────── --}}
+    <div class="main-content page-bg">
 
         {{-- Flash Messages --}}
         @if(session('success'))
