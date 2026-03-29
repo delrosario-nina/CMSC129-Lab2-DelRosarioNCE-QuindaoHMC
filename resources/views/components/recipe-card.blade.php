@@ -10,7 +10,7 @@
 <a href="{{ route('recipes.show', $recipe) }}" class="recipe-row block group">
     <div class="flex items-baseline gap-0">
         {{-- Title --}}
-        <span class="diary-title text-xl shrink-0 group-hover:text-amber-700 transition-colors">
+        <span class="diary-title text-xl shrink-0 group-hover:text-amber-700">
             {{ $recipe->title }}
         </span>
 

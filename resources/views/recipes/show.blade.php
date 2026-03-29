@@ -21,7 +21,7 @@
     {{-- ── Arrow navigation ──────────────────────────────── --}}
     @if($prev)
         <a href="{{ route('recipes.show', $prev) }}"
-           class="fixed left-[-48px] top-[50vh] -translate-y-1/2 text-4xl text-gray-600 hover:text-gray-900 transition-all duration-300 hover:scale-110 select-none page-turn-left"
+           class="fixed left-[-48px] top-[50vh] -translate-y-1/2 text-4xl text-gray-600 hover:text-gray-900 select-none page-turn-left"
            style="left: -80px; top: 50vh;"
            title="Previous: {{ $prev->title }}">
             <span class="material-symbols-outlined">keyboard_arrow_left</span>
@@ -29,7 +29,7 @@
     @endif
     @if($next)
         <a href="{{ route('recipes.show', $next) }}"
-           class="fixed right-[-48px] top-[50vh] -translate-y-1/2 text-4xl text-gray-600 hover:text-gray-900 transition-all duration-300 hover:scale-110 select-none page-turn-right"
+           class="fixed right-[-48px] top-[50vh] -translate-y-1/2 text-4xl text-gray-600 hover:text-gray-900 select-none page-turn-right"
            style="right: -80px; top: 50vh;"
            title="Next: {{ $next->title }}">
             <span class="material-symbols-outlined">keyboard_arrow_right</span>
@@ -38,7 +38,7 @@
 
     {{-- ── Back link ──────────────────────────────────────── --}}
     <a href="{{ route('recipes.index') }}"
-       class="diary-body text-sm text-gray-500 hover:text-gray-800 transition mb-8 inline-block">
+       class="diary-body text-sm text-gray-500 hover:text-gray-800 mb-8 inline-block">
         ← Back to diary
     </a>
 
@@ -52,14 +52,14 @@
             <div class="flex items-start gap-3 mb-3">
                 <h1 class="diary-title text-3xl leading-tight">{{ $recipe->title }}</h1>
                 <a href="{{ route('recipes.edit', $recipe) }}"
-                   class="text-gray-400 hover:text-gray-700 transition mt-1 shrink-0" title="Edit">
+                   class="text-gray-400 hover:text-gray-700 mt-1 shrink-0" title="Edit">
                     <span class="material-symbols-outlined">edit</span>
                 </a>
                 <form action="{{ route('recipes.destroy', $recipe) }}" method="POST"
                       onsubmit="return confirm('Move to trash?')" class="mt-1 shrink-0">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="text-red-400 hover:text-red-600 transition" title="Delete">
+                    <button type="submit" class="text-red-400 hover:text-red-600" title="Delete">
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </form>

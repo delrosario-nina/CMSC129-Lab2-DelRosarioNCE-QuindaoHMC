@@ -94,12 +94,6 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
             opacity: 1;
         }
-        .page-turn-left:hover {
-            transform: translateY(-50%) translateX(-8px) rotate(-10deg);
-        }
-        .page-turn-right:hover {
-            transform: translateY(-50%) translateX(8px) rotate(10deg);
-        }
         .page-turn-left:active, .page-turn-right:active {
             transform: translateY(-50%) scale(0.9);
         }
@@ -135,7 +129,6 @@
 
         /* ─── Sidebar (removed and replaced by header icons) ────────────────────────────────────── */
         .main-content {
-            transition: margin-left 0.3s ease-out;
         }
 
         @media (max-width: 768px) {
@@ -155,7 +148,7 @@
         <div class="content-shell mx-auto px-6 py-4 flex items-center justify-between h-full">
 
             {{-- Delete icon (upper left) --}}
-            <a href="{{ route('recipes.trash') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-red-500 transition" title="Trash">delete_history</a>
+            <a href="{{ route('recipes.trash') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-red-500" title="Trash">delete_history</a>
 
             {{-- Centered Logo --}}
             <a href="{{ route('recipes.index') }}" class="nav-logo-box">
@@ -163,7 +156,7 @@
             </a>
 
             {{-- Add icon (upper right) --}}
-            <a href="{{ route('recipes.create') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-amber-700 transition" title="Add Recipe">add</a>
+            <a href="{{ route('recipes.create') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-amber-700" title="Add Recipe">add</a>
         </div>
     </nav>
 
@@ -213,14 +206,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const main = document.querySelector('main');
             if (main) {
-                main.style.opacity = '0';
-                main.style.transform = 'translateY(20px)';
-                main.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-
-                setTimeout(() => {
-                    main.style.opacity = '1';
-                    main.style.transform = 'translateY(0)';
-                }, 100);
+                // Removed animation to improve performance
             }
         });
     </script>
