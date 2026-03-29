@@ -25,8 +25,8 @@
         <template x-if="show">
             <div
                 style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;"
-                @keydown.escape.window="show = false; window.dispatchEvent(new CustomEvent('flashModalClose'))"
-                @click.self="show = false; window.dispatchEvent(new CustomEvent('flashModalClose'))"
+                @keydown.escape.window="show = false; $dispatch('flashModalClose')"
+                @click.self="show = false; $dispatch('flashModalClose')"
             >
                 <div style="background:#fff; border-radius:1rem; border:1px solid #e5e5e5; box-shadow:0 8px 32px rgba(0,0,0,0.18); max-width:420px; width:90%; padding:2rem; text-align:center;" @click.stop>
                     <h3 style="margin:0 0 0.75rem; color:#111; font-size:1.1rem; font-weight:700;">{{ $modalTitle }}</h3>
@@ -34,17 +34,17 @@
                     @if($confirm)
                         <div style="display:flex; justify-content:center; gap:0.75rem;">
                             <button
-                                @click="show = false; window.dispatchEvent(new CustomEvent('flashConfirm'))"
+                                @click="show = false; $dispatch('flashConfirm')"
                                 style="background:#000; color:#fff; border:none; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;"
                             >{{ $confirmText }}</button>
                             <button
-                                @click="show = false; window.dispatchEvent(new CustomEvent('flashCancel'))"
+                                @click="show = false; $dispatch('flashCancel')"
                                 style="background:#f5f5f5; color:#333; border:1px solid #dcdcdc; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;"
                             >{{ $cancelText }}</button>
                         </div>
                     @else
                         <button
-                            @click="show = false; window.dispatchEvent(new CustomEvent('flashModalClose'))"
+                            @click="show = false; $dispatch('flashModalClose')"
                             style="background:#000; color:#fff; border:none; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;"
                         >OK</button>
                     @endif

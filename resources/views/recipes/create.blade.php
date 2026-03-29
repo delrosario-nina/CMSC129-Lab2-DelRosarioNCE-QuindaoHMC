@@ -535,7 +535,7 @@ upload
     </div>
 
     {{-- Error Modal Component --}}
-    <template x-if="showErrorModal">
+   <template x-if="showErrorModal">
     <div
         style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;"
         @click.self="showErrorModal = false"

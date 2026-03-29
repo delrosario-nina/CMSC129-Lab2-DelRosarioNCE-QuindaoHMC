@@ -1,37 +1,27 @@
 @props(['recipe', 'page' => 1])
 
-<div x-data="{ showConfirm: false }" class="recipe-row group relative">
+<div x-data="{ showConfirm: false }"
+     @flashConfirm="$refs.deleteRecipeForm && $refs.deleteRecipeForm.submit(); showConfirm = false"
+     @flashCancel="showConfirm = false"
+     class="recipe-row group relative">
 
     {{-- Confirm modal --}}
     <template x-if="showConfirm">
-        <div
-            style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;"
-            @click.self="showConfirm = false"
-            @keydown.escape.window="showConfirm = false"
-        >
-            <div style="background:#fff; border-radius:1rem; border:1px solid #e5e5e5; box-shadow:0 8px 32px rgba(0,0,0,0.18); max-width:420px; width:90%; padding:2rem; text-align:center;" @click.stop>
-                <h3 style="margin:0 0 0.75rem; color:#111; font-size:1.1rem; font-weight:700;">Move to Trash?</h3>
-                <p style="margin:0 0 1.5rem; color:#444; font-size:0.95rem; line-height:1.5;">
-                    <strong>{{ $recipe->title }}</strong> will be moved to trash. You can restore it later.
-                </p>
-                <div style="display:flex; justify-content:center; gap:0.75rem;">
-                    <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button
-                            type="submit"
-                            style="background:#000; color:#fff; border:none; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;"
-                        >Yes, delete</button>
-                    </form>
-                    <button
-                        type="button"
-                        @click="showConfirm = false"
-                        style="background:#f5f5f5; color:#333; border:1px solid #dcdcdc; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;"
-                    >Cancel</button>
-                </div>
-            </div>
-        </div>
+        <x-flash-message
+            type="warning"
+            modal
+            confirm
+            title="Move to Trash?"
+            message="Move '{{ $recipe->title }}' to trash? You can restore it later."
+            confirmText="Yes, move"
+            cancelText="Cancel"
+        />
     </template>
+
+    <form x-ref="deleteRecipeForm" action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
 
     {{-- Row — div instead of <a>, navigates on click unless delete button --}}
     <div

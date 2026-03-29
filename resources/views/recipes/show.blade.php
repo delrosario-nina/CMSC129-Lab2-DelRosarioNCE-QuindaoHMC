@@ -53,12 +53,32 @@
                     <a href="{{ route('recipes.edit', $recipe) }}" class="text-gray-700 hover:text-black" title="Edit">
                         <span class="material-symbols-outlined">edit</span>
                     </a>
-                    <form action="{{ route('recipes.destroy', $recipe) }}" method="POST" onsubmit="return confirm('Move to trash?');" class="inline">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:text-red-700" title="Delete">
+                    <div x-data="{ showDeleteConfirm: false }"
+                         @flashConfirm="$refs.deleteRecipeForm && $refs.deleteRecipeForm.submit(); showDeleteConfirm=false"
+                         @flashCancel="showDeleteConfirm=false"
+                         class="inline">
+
+                        <button type="button" @click="showDeleteConfirm=true" class="text-red-500 hover:text-red-700" title="Delete">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
-                    </form>
+
+                        <form id="deleteRecipeForm" x-ref="deleteRecipeForm" action="{{ route('recipes.destroy', $recipe) }}" method="POST" class="hidden">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+
+                        <template x-if="showDeleteConfirm">
+                            <x-flash-message
+                                type="warning"
+                                modal
+                                confirm
+                                title="Move to Trash?"
+                                message="Move '{{ $recipe->title }}' to trash? You can restore it later."
+                                confirmText="Yes, move"
+                                cancelText="Cancel"
+                            />
+                        </template>
+                    </div>
                 </div>
 
                 <div class="recipe-tags">
@@ -123,6 +143,16 @@
         </div>
 
 
+
+    <script>
+        // Global fallback for flash-message confirm event.
+        window.addEventListener('flashConfirm', function() {
+            const form = document.getElementById('deleteRecipeForm');
+            if (form) {
+                form.submit();
+            }
+        });
+    </script>
 
     {{-- Step-by-step full-screen modal (refined) --}}
     <div id="step-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
