@@ -44,9 +44,9 @@ class RecipeController extends Controller
     // CREATE - Show form to create a new recipe
     public function create()
     {
-        $categories = Category::all();
-        return view('recipes.create', compact('categories'));
+        return view('recipes.create', $this->categoryViewData());
     }
+
 
     // STORE - Save new recipe to database
     public function store(Request $request)
@@ -118,8 +118,11 @@ class RecipeController extends Controller
     public function edit(Recipe $recipe)
     {
         $recipe->load('ingredients', 'steps', 'categories');
-        $categories = Category::all();
-        return view('recipes.edit', compact('recipe', 'categories'));
+
+        return view('recipes.edit', array_merge(
+            ['recipe' => $recipe],
+            $this->categoryViewData()
+        ));
     }
 
     // UPDATE - Save edited recipe to database
@@ -222,4 +225,19 @@ class RecipeController extends Controller
         return redirect()->route('recipes.trash')
             ->with('success', 'Recipe permanently deleted!');
     }
+
+    private function categoryViewData(): array
+    {
+        $categories = Category::orderBy('type')->orderBy('name')->get();
+
+        return [
+            'categories'        => $categories,
+            'groupedCategories' => $categories->groupBy('type'),
+            'categoryTypes'     => config('recipe.category_types'),
+            'typeColors'        => collect(config('recipe.category_types'))
+                                    ->mapWithKeys(fn($v, $k) => [$k => $v['color']])
+                                    ->toArray(),
+        ];
+    }
+
 }

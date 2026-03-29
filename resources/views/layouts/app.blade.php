@@ -68,7 +68,6 @@
             border-radius: 9999px;
             padding: 0.55rem 1.6rem;
             display: inline-block;
-            transition: background 0.15s;
         }
         .btn-cook:hover { background: var(--accent-h); }
 
