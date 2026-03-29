@@ -17,7 +17,8 @@
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($recipes as $recipe)
-                <div class="bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden opacity-75">
+                <div x-data="{ showRestore: false, showDelete: false }"
+                     class="bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden opacity-75">
 
                     @if($recipe->image_path)
                         <img src="{{ Storage::url($recipe->image_path) }}"
@@ -36,28 +37,76 @@
                         </p>
 
                         <div class="flex gap-2">
-                            {{-- Restore --}}
-                            <form action="{{ route('recipes.restore', $recipe->id) }}" method="POST" class="flex-1">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit"
-                                        class="w-full bg-green-500 text-white text-sm py-2 rounded-lg hover:bg-green-600 transition">
-                                    ♻️ Restore
-                                </button>
-                            </form>
+                            {{-- Restore button --}}
+                            <button type="button" @click="showRestore = true"
+                                class="w-full bg-green-500 text-white text-sm py-2 rounded-lg hover:bg-green-600 transition">
+                                ♻️ Restore
+                            </button>
 
-                            {{-- Permanent Delete --}}
-                            <form action="{{ route('recipes.forceDelete', $recipe->id) }}" method="POST"
-                                  onsubmit="return confirm('Permanently delete this recipe? This cannot be undone.')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="border border-red-400 text-red-400 text-sm px-3 py-2 rounded-lg hover:bg-red-50 transition">
-                                    🗑 Delete Forever
-                                </button>
-                            </form>
+                            {{-- Force delete button --}}
+                            <button type="button" @click="showDelete = true"
+                                class="border border-red-400 text-red-400 text-sm px-3 py-2 rounded-lg hover:bg-red-50 transition">
+                                🗑 Delete Forever
+                            </button>
                         </div>
                     </div>
+
+                    {{-- Restore confirm modal --}}
+                    <template x-if="showRestore">
+                        <div style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;"
+                             @click.self="showRestore = false"
+                             @keydown.escape.window="showRestore = false">
+                            <div style="background:#fff; border-radius:1rem; border:1px solid #e5e5e5; box-shadow:0 8px 32px rgba(0,0,0,0.18); max-width:420px; width:90%; padding:2rem; text-align:center;" @click.stop>
+                                <h3 style="margin:0 0 0.75rem; color:#111; font-size:1.1rem; font-weight:700;">Restore Recipe?</h3>
+                                <p style="margin:0 0 1.5rem; color:#444; font-size:0.95rem; line-height:1.5;">
+                                    <strong>{{ $recipe->title }}</strong> will be restored to your diary.
+                                </p>
+                                <div style="display:flex; justify-content:center; gap:0.75rem;">
+                                    <form action="{{ route('recipes.restore', $recipe->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit"
+                                            style="background:#22c55e; color:#fff; border:none; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;">
+                                            Yes, restore
+                                        </button>
+                                    </form>
+                                    <button type="button" @click="showRestore = false"
+                                        style="background:#f5f5f5; color:#333; border:1px solid #dcdcdc; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    {{-- Force delete confirm modal --}}
+                    <template x-if="showDelete">
+                        <div style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;"
+                             @click.self="showDelete = false"
+                             @keydown.escape.window="showDelete = false">
+                            <div style="background:#fff; border-radius:1rem; border:1px solid #e5e5e5; box-shadow:0 8px 32px rgba(0,0,0,0.18); max-width:420px; width:90%; padding:2rem; text-align:center;" @click.stop>
+                                <h3 style="margin:0 0 0.75rem; color:#c00; font-size:1.1rem; font-weight:700;">Delete Forever?</h3>
+                                <p style="margin:0 0 1.5rem; color:#444; font-size:0.95rem; line-height:1.5;">
+                                    <strong>{{ $recipe->title }}</strong> will be permanently deleted. This cannot be undone.
+                                </p>
+                                <div style="display:flex; justify-content:center; gap:0.75rem;">
+                                    <form action="{{ route('recipes.forceDelete', $recipe->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            style="background:#dc2626; color:#fff; border:none; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;">
+                                            Yes, delete forever
+                                        </button>
+                                    </form>
+                                    <button type="button" @click="showDelete = false"
+                                        style="background:#f5f5f5; color:#333; border:1px solid #dcdcdc; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
                 </div>
             @endforeach
         </div>

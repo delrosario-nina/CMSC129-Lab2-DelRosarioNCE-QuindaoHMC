@@ -26,20 +26,24 @@
     }
 }">
     <div class="category-grid">
-        @foreach($categoryTypes as $typeKey => $typeMeta)
-            <div class="category-select-wrapper">
-                <label class="type-label-{{ $typeKey }}">{{ $typeMeta['label'] }}</label>
-                <select
-                    x-model="selectedType['{{ $typeKey }}']"
-                    @change="addCategory('{{ $typeKey }}')"
-                    class="form-select category-select-{{ $typeKey }}"
-                >
-                    <option value="">Pick {{ $typeMeta['label'] }}…</option>
-                    @foreach($groupedCategories[$typeKey] ?? [] as $cat)
-                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+        @php $ordering = ['complexity', 'status', 'type', 'protein', 'time']; @endphp
+        @foreach($ordering as $typeKey)
+            @if(isset($categoryTypes[$typeKey]))
+                @php $typeMeta = $categoryTypes[$typeKey]; @endphp
+                <div class="category-select-wrapper">
+                    <label class="type-label-{{ $typeKey }}">{{ $typeMeta['label'] }}</label>
+                    <select
+                        x-model="selectedType['{{ $typeKey }}']"
+                        @change="addCategory('{{ $typeKey }}')"
+                        class="form-select category-select-{{ $typeKey }}"
+                    >
+                        <option value="">Pick {{ $typeMeta['label'] }}…</option>
+                        @foreach($groupedCategories[$typeKey] ?? [] as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
         @endforeach
     </div>
 

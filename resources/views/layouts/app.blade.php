@@ -36,7 +36,6 @@
 
         /* bg.png covers everything below the navbar */
         .page-bg {
-            background-image: url('/assets/bg.png');
             background-size: cover;
             background-position: center top;
             background-attachment: fixed;
@@ -152,7 +151,7 @@
 
             {{-- Centered Logo --}}
             <a href="{{ route('recipes.index') }}" class="nav-logo-box">
-                <span class="diary-display text-4xl text-gray-900 leading-none">Nina's Recipe Diary</span>
+                <span class="diary-display text-3xl text-gray-900 leading-none">Nina's Recipe Diary</span>
             </a>
 
             {{-- Add icon (upper right) --}}
@@ -166,12 +165,12 @@
         {{-- Flash Messages --}}
         @if(session('success'))
             <div class="max-w-5xl mx-auto px-6 pt-4">
-                @include('components.flash-message', ['type' => 'success', 'message' => session('success')])
+                <x-flash-message type="success" :message="session('success')" :modal="true" />
             </div>
         @endif
         @if(session('error'))
             <div class="max-w-5xl mx-auto px-6 pt-4">
-                @include('components.flash-message', ['type' => 'error', 'message' => session('error')])
+                <x-flash-message type="error" :message="session('error')" :modal="true" />
             </div>
         @endif
 

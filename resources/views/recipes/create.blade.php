@@ -8,23 +8,16 @@
 .rfp {
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
-    background: url('/assets/bg.png') center/cover no-repeat;
+    background: #ffffff;
     padding: 2rem 1rem;
 }
-.back-link {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    color: #92400e; font-size: 0.875rem; font-weight: 500;
-    text-decoration: none; opacity: 0.7; margin-bottom: 1.75rem;
-}
-.back-link:hover { opacity: 1; }
 
 /* Card */
 .form-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     max-width: 1000px;
     margin: 0 auto;
     overflow: hidden;
@@ -40,38 +33,38 @@
 }
 .stepper-track::before {
     content: ''; position: absolute; top: 1.125rem; left: 1.125rem;
-    right: 1.125rem; height: 2px; background: #f0e8de; z-index: 0;
+    right: 1.125rem; height: 2px; background: #e5e5e5; z-index: 0;
 }
 .step-node {
     display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
     flex: 1; position: relative; z-index: 1;
 }
 .step-bubble {
-    width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 2px solid #e8ddd4;
-    background: #ffffff; display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 600; color: #c4a882;
+    width: 2.25rem; height: 2.25rem; border-radius: 50%; border: 2px solid #d0d0d0;
+    background: #f5f5f5; display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 600; color: #999999;
     font-family: 'Lora', serif;
 }
 .step-bubble.active {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b);
-    border-color: #f59e0b; color: #ffffff;
-    box-shadow: 0 0 0 4px rgba(245,158,11,0.15);
+    background: #000000;
+    border-color: #000000; color: #ffffff;
+    box-shadow: none;
 }
 .step-bubble.done {
-    background: #fef3c7; border-color: #fde68a; color: #92400e;
+    background: #f5f5f5; border-color: #d0d0d0; color: #666666;
 }
 .step-label {
-    font-size: 0.6875rem; font-weight: 500; color: #c4a882; white-space: nowrap;
+    font-size: 0.6875rem; font-weight: 500; color: #999999; white-space: nowrap;
 }
-.step-label.active { color: #92400e; }
-.step-label.done   { color: #b45309; }
+.step-label.active { color: #000000; font-weight: 600; }
+.step-label.done   { color: #666666; }
 
 /* Progress bar */
 .progress-bar-track {
-    height: 3px; background: #f0e8de; border-radius: 99px; margin-bottom: 0; overflow: hidden;
+    height: 2px; background: #e5e5e5; border-radius: 99px; margin-bottom: 0; overflow: hidden;
 }
 .progress-bar-fill {
-    height: 100%; background: linear-gradient(90deg, #fbbf24, #f59e0b);
+    height: 100%; background: #000000;
     border-radius: 99px;
 }
 
@@ -79,29 +72,73 @@
 .step-panel { padding: 2rem; display: none; }
 .step-panel.active { display: block; }
 .step-title {
-    font-family: 'Lora', serif; font-size: 1.375rem; font-weight: 600;
-    color: #1c1410; margin-bottom: 0.25rem;
+    font-family: 'DM Sans', sans-serif; font-size: 1.375rem; font-weight: 600;
+    color: #000000; margin-bottom: 0.25rem;
 }
-.step-desc { font-size: 0.875rem; color: #a07850; margin-bottom: 1.75rem; }
+.step-desc { font-size: 0.875rem; color: #666666; margin-bottom: 1.75rem; }
+
+/* Error message */
+.error-message {
+    background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca;
+    border-radius: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1rem;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    padding: 2rem;
+    text-align: center;
+}
 
 /* Fields */
 .field-group { margin-bottom: 1.25rem; }
-.field-label { display: block; font-size: 0.8125rem; font-weight: 500; color: #6b5240; margin-bottom: 0.375rem; }
-.field-label .req { color: #f87171; }
+.field-label { display: block; font-size: 0.8125rem; font-weight: 500; color: #333333; margin-bottom: 0.375rem; }
+.field-label .req { color: #d97757; }
 .fi, .ft, .fs {
-    width: 100%; background: #fdfaf7; border: 1.5px solid #e8ddd4; border-radius: 0.75rem;
+    width: 100%; background: #ffffff; border: 1.5px solid #d0d0d0; border-radius: 0.5rem;
     padding: 0.625rem 0.875rem; font-size: 0.9375rem; font-family: 'DM Sans', sans-serif;
-    color: #1c1410; outline: none;
+    color: #000000; outline: none;
     box-sizing: border-box;
 }
-.fi:focus, .ft:focus, .fs:focus { border-color: #f59e0b; background: #fff; box-shadow: 0 0 0 3px rgba(245,158,11,0.1); }
-.fi.err, .ft.err { border-color: #fca5a5; background: #fff5f5; }
+.fi:focus, .ft:focus, .fs:focus { border-color: #000000; background: #fff; box-shadow: 0 0 0 3px rgba(0,0,0,0.08); }
+.fi.err, .ft.err { border-color: #d97757; background: #fff8f6; }
 .ft { resize: vertical; min-height: 80px; }
 .fs {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a07850' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 0.875rem center;
-    padding-right: 2.5rem; cursor: pointer;
+    width: 100%;
+    background-color: #fdfaf7;
+    border: 1.5px solid #e8ddd4;
+    border-radius: 1rem;
+    padding: 0.75rem 2.75rem 0.75rem 0.875rem;
+    font-size: 0.9375rem;
+    font-family: 'DM Sans', sans-serif;
+    color: #1c1410;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237f6758' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    outline: none;
+    box-sizing: border-box;
+}
+.fs:hover {
+    border-color: #d9c4b0;
+    background-color: #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+.fs:focus {
+    border-color: #b89a7f;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(184, 154, 127, 0.18), 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 .err-msg { color: #ef4444; font-size: 0.75rem; margin-top: 0.3rem; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
@@ -109,57 +146,69 @@
 
 /* Image upload */
 .upload-zone {
-    border: 2px dashed #e8ddd4; border-radius: 0.875rem; padding: 2rem;
-    text-align: center; background: #fdfaf7; cursor: pointer; position: relative;
+    border: 2px dashed #d0d0d0; border-radius: 0.5rem; padding: 2rem;
+    text-align: center; background: #fafafa; cursor: pointer; position: relative;
 }
-.upload-zone:hover { border-color: #f59e0b; background: #fffbf0; }
+.upload-zone:hover { border-color: #999999; background: #f5f5f5; }
 .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 .upload-icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-.upload-text { font-size: 0.875rem; color: #a07850; font-weight: 500; }
-.upload-hint { font-size: 0.75rem; color: #c4a882; margin-top: 0.25rem; }
-.upload-filename { font-size: 0.8rem; color: #92400e; margin-top: 0.5rem; font-weight: 500; }
+.upload-text { font-size: 0.875rem; color: #666666; font-weight: 500; }
+.upload-hint { font-size: 0.75rem; color: #999999; margin-top: 0.25rem; }
+.upload-filename { font-size: 0.8rem; color: #333333; margin-top: 0.5rem; font-weight: 500; }
 
 /* Category selects */
-.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
-@media (max-width: 480px) { .cat-grid { grid-template-columns: 1fr; } }
-.cat-type-label { display: block; font-size: 0.75rem; font-weight: 500; margin-bottom: 0.3rem; }
-.tl-complexity { color: #be123c; } .tl-time { color: #1d4ed8; } .tl-type { color: #065f46; }
-.tl-protein { color: #4338ca; }   .tl-status { color: #b45309; }
-.cs-complexity { border-color: #fecdd3 !important; background: #fff5f7 !important; }
-.cs-time       { border-color: #bfdbfe !important; background: #f5f8ff !important; }
-.cs-type       { border-color: #a7f3d0 !important; background: #f0fdf8 !important; }
-.cs-protein    { border-color: #c7d2fe !important; background: #f5f5ff !important; }
-.cs-status     { border-color: #fde68a !important; background: #fffbeb !important; }
-.cs-complexity:focus { border-color: #fb7185 !important; box-shadow: 0 0 0 3px rgba(251,113,133,0.12) !important; }
-.cs-time:focus       { border-color: #60a5fa !important; box-shadow: 0 0 0 3px rgba(96,165,250,0.12) !important; }
-.cs-type:focus       { border-color: #34d399 !important; box-shadow: 0 0 0 3px rgba(52,211,153,0.12) !important; }
-.cs-protein:focus    { border-color: #818cf8 !important; box-shadow: 0 0 0 3px rgba(129,140,248,0.12) !important; }
-.cs-status:focus     { border-color: #fbbf24 !important; box-shadow: 0 0 0 3px rgba(251,191,36,0.12) !important; }
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 800px) { .cat-grid { grid-template-columns: 1fr; } }
+.cat-type-label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.5rem; color: #333333; }
+.tl-complexity { color: #d97757; } .tl-time { color: #8b7355; } .tl-type { color: #8b7355; }
+.tl-protein { color: #8b7355; } .tl-status { color: #d97757; }
+.category-options { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.cat-chip { display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid #d0d0d0; background: #ffffff; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.85rem; color: #333333; cursor: pointer; transition: all 0.15s ease; }
+.cat-chip:hover { border-color: #999999; background-color: #f5f5f5; }
+.cat-chip-selected { border-color: #000000; background-color: #000000; color: #ffffff; }
+.cat-chip-selected .cat-chip-remove { display: inline-block; color: #ffffff; background: rgba(255,255,255,0.2); padding: 0 0.25rem; border-radius: 999px; font-weight: 700; }
+.cat-chip-remove { display: none; font-size: 0.85rem; }
+.cat-chip-selected .cat-chip-remove { display: inline-block; }
+.cat-chip-remove:hover { color: #ffffff; background-color: rgba(255,255,255,0.35); }
+.tags-hint { font-size: 0.8rem; color: #666666; margin-top: 0.5rem; }
+
+.cs-complexity { border-color: #f5ddd2 !important; background: #fef8f5 !important; }
+.cs-time       { border-color: #e8dcc0 !important; background: #fdfaf5 !important; }
+.cs-type       { border-color: #e8dcc0 !important; background: #fdfaf5 !important; }
+.cs-protein    { border-color: #e8dcc0 !important; background: #fdfaf5 !important; }
+.cs-status     { border-color: #f5ddd2 !important; background: #fef8f5 !important; }
+.cs-complexity:focus { border-color: #d97757 !important; box-shadow: 0 0 0 3px rgba(217,119,87,0.15) !important; }
+.cs-time:focus       { border-color: #8b7355 !important; box-shadow: 0 0 0 3px rgba(139,115,85,0.15) !important; }
+.cs-type:focus       { border-color: #8b7355 !important; box-shadow: 0 0 0 3px rgba(139,115,85,0.15) !important; }
+.cs-protein:focus    { border-color: #8b7355 !important; box-shadow: 0 0 0 3px rgba(139,115,85,0.15) !important; }
+.cs-status:focus     { border-color: #d97757 !important; box-shadow: 0 0 0 3px rgba(217,119,87,0.15) !important; }
 
 /* Tags */
 .tags-box {
     display: flex; flex-wrap: wrap; gap: 0.5rem; min-height: 2.5rem;
-    padding: 0.625rem; background: #fdfaf7; border-radius: 0.75rem;
-    border: 1.5px solid #f0e8de; margin-top: 0.5rem;
+    padding: 0.625rem; background: #ffffff; border-radius: 0.75rem;
+    border: 1px solid #dcdcdc; margin-top: 0.5rem;
 }
 .cat-tag {
-    display: inline-flex; align-items: center; gap: 0.375rem;
-    padding: 0.3125rem 0.625rem 0.3125rem 0.75rem; border-radius: 999px;
-    font-size: 0.75rem; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.35rem 0.65rem; border-radius: 999px;
+    font-size: 0.78rem; font-weight: 600; background: #fafafa;
+    border: 1px solid #e5e5e5; color: #333333;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
-.tag-complexity { background: #fff0f3; color: #be123c; border: 1px solid #fecdd3; }
-.tag-time       { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-.tag-type       { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-.tag-protein    { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
-.tag-status     { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.tag-complexity { background: #fff8f5; color: #d97757; border-color: #f5ddd2; }
+.tag-time       { background: #fffdf9; color: #8b7355; border-color: #e8dcc0; }
+.tag-type       { background: #fffdf9; color: #8b7355; border-color: #e8dcc0; }
+.tag-protein    { background: #fffdf9; color: #8b7355; border-color: #e8dcc0; }
+.tag-status     { background: #fff8f5; color: #d97757; border-color: #f5ddd2; }
 .tag-x {
-    width: 1.125rem; height: 1.125rem; border-radius: 50%; border: none;
-    background: rgba(0,0,0,0.08); cursor: pointer; display: inline-flex;
-    align-items: center; justify-content: center; font-size: 0.6rem;
-    padding: 0; line-height: 1;
+    width: 1.05rem; height: 1.05rem; border-radius: 50%; border: none;
+    background: rgba(0,0,0,0.12); cursor: pointer; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 0.8rem;
+    color: #333333; padding: 0; line-height: 1;
 }
-.tag-x:hover { background: rgba(0,0,0,0.18); }
-.tags-hint { font-size: 0.7rem; color: #c4a882; margin-top: 0.375rem; }
+.tag-x:hover { background: rgba(0,0,0,0.22); }
+.tags-hint { font-size: 0.74rem; color: #666666; margin-top: 0.375rem; }
 
 /* Dynamic rows */
 .row-anim { }
@@ -167,22 +216,22 @@
 .ing-row .amt { width: 36%; flex-shrink: 0; }
 .ing-row .nm  { flex: 1; }
 .btn-x {
-    background: none; border: none; color: #fca5a5; cursor: pointer; font-size: 1rem;
+    background: none; border: none; color: #d97757; cursor: pointer; font-size: 1rem;
     padding: 0.25rem; border-radius: 0.375rem; line-height: 1; flex-shrink: 0;
 }
-.btn-x:hover { color: #ef4444; background: #fff1f1; }
+.btn-x:hover { color: #d97757; background: #fef8f5; }
 .btn-add {
     display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; font-weight: 500;
-    color: #92400e; background: #fef3c7; border: 1.5px solid #fde68a; border-radius: 0.625rem;
+    color: #8b7355; background: #fdfaf5; border: 1.5px solid #e8dcc0; border-radius: 0.5rem;
     padding: 0.4rem 0.875rem; cursor: pointer;
 }
-.btn-add:hover { background: #fde68a; border-color: #fbbf24; }
+.btn-add:hover { background: #f5ede0; border-color: #dcc8ad; }
 .step-row { display: flex; gap: 0.875rem; align-items: flex-start; }
 .step-num {
-    width: 2rem; height: 2rem; background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    width: 2rem; height: 2rem; background: #000000;
     color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     font-size: 0.8125rem; font-weight: 700; flex-shrink: 0; margin-top: 0.5rem;
-    box-shadow: 0 2px 6px rgba(245,158,11,0.3); font-family: 'Lora', serif;
+    box-shadow: none; font-family: 'DM Sans', sans-serif;
 }
 .step-fields { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
 .space-y  { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -192,22 +241,22 @@
 .step-footer {
     padding: 1.25rem 2rem 2rem;
     display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid #f3f0eb;
+    border-top: 1px solid #e5e5e5;
 }
 .btn-prev {
-    background: white; color: #6b7280; border: 1.5px solid #e5e7eb;
-    padding: 0.625rem 1.5rem; border-radius: 0.875rem; font-size: 0.9375rem;
+    background: #ffffff; color: #666666; border: 1.5px solid #d0d0d0;
+    padding: 0.625rem 1.5rem; border-radius: 0.5rem; font-size: 0.9375rem;
     font-family: 'DM Sans', sans-serif; cursor: pointer;
 }
-.btn-prev:hover { background: #f9fafb; border-color: #d1d5db; }
+.btn-prev:hover { background: #f5f5f5; border-color: #999999; }
 .btn-next, .btn-save {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1c1410; border: none;
-    padding: 0.625rem 1.75rem; border-radius: 0.875rem; font-size: 0.9375rem; font-weight: 600;
+    background: #000000; color: #ffffff; border: none;
+    padding: 0.625rem 1.75rem; border-radius: 0.5rem; font-size: 0.9375rem; font-weight: 600;
     font-family: 'DM Sans', sans-serif; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(245,158,11,0.35);
+    box-shadow: none;
 }
-.btn-next:hover, .btn-save:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(245,158,11,0.45); filter: brightness(1.04); }
-.step-counter { font-size: 0.8125rem; color: #c4a882; }
+.btn-next:hover, .btn-save:hover { background: #1a1a1a; }
+.step-counter { font-size: 0.8125rem; color: #999999; }
 </style>
 
 @php
@@ -224,26 +273,56 @@
         cookingSteps: [{ title: '', instruction: '' }],
         allCategories:      {{ Js::from($categories) }},
         selectedCategories: {{ Js::from($selectedByDefault) }},
-        selectedType:       {{ Js::from(array_fill_keys(array_keys($categoryTypes), '')) }},
-        typeColors:         {{ Js::from($typeColors) }},
         filename: '',
+        showErrorModal: false,
+        errorMessage: '',
 
         get progressWidth() {
             return ((this.currentStep - 1) / (this.totalSteps - 1) * 100) + '%';
         },
-        addCategory(type) {
-            const id = this.selectedType[type];
-            if (!id) return;
-            if (!this.selectedCategories.find(c => c.id === Number(id))) {
-                const cat = this.allCategories.find(c => c.id === Number(id));
-                if (cat) this.selectedCategories.push(cat);
+        toggleCategory(category) {
+            const index = this.selectedCategories.findIndex(c => c.id === category.id);
+            if (index !== -1) {
+                this.selectedCategories.splice(index, 1);
+            } else {
+                this.selectedCategories.push(category);
             }
-            this.selectedType[type] = '';
         },
         removeCategory(id) {
             this.selectedCategories = this.selectedCategories.filter(c => c.id !== id);
         },
-        nextStep() { if (this.currentStep < this.totalSteps) this.currentStep++; },
+        validateStep() {
+            let errors = [];
+            if (this.currentStep === 1) {
+                if (!this.$refs.title.value.trim()) errors.push('Title is required');
+                if (!this.$refs.description.value.trim()) errors.push('Description is required');
+                if (!this.$refs.prep_time.value.trim()) errors.push('Prep time is required');
+                if (!this.$refs.cook_time.value.trim()) errors.push('Cook time is required');
+                if (!this.$refs.difficulty.value) errors.push('Difficulty is required');
+            } else if (this.currentStep === 2) {
+                if (this.selectedCategories.length === 0) errors.push('At least one category is required');
+            } else if (this.currentStep === 3) {
+                if (this.ingredients.length === 0) errors.push('At least one ingredient is required');
+                this.ingredients.forEach((ing, i) => {
+                    if (!ing.name.trim()) errors.push(`Ingredient ${i+1} name is required`);
+                    if (!ing.amount.trim()) errors.push(`Ingredient ${i+1} amount is required`);
+                });
+            } else if (this.currentStep === 4) {
+                if (this.cookingSteps.length === 0) errors.push('At least one step is required');
+                this.cookingSteps.forEach((step, i) => {
+                    if (!step.title.trim()) errors.push(`Step ${i+1} title is required`);
+                    if (!step.instruction.trim()) errors.push(`Step ${i+1} instruction is required`);
+                });
+            }
+            if (errors.length > 0) {
+                this.errorMessage = errors.join('. ');
+                this.showErrorModal = true;
+                return false;
+            } else {
+                return true;
+            }
+        },
+        nextStep() { if (this.currentStep < this.totalSteps && this.validateStep()) this.currentStep++; },
         prevStep() { if (this.currentStep > 1) this.currentStep--; },
     }">
 
@@ -283,16 +362,16 @@
                 <div class="field-group">
                     <label class="field-label">Recipe Title <span class="req">*</span></label>
                     <input type="text" name="title" value="{{ old('title') }}"
-                        placeholder="e.g. Grandma's Chocolate Cake"
-                        class="fi {{ $errors->has('title') ? 'err' : '' }}">
+                        placeholder="e.g. Ultimate Pancit Canton"
+                        class="fi {{ $errors->has('title') ? 'err' : '' }}" x-ref="title">
                     @error('title')<p class="err-msg">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="field-group">
                     <label class="field-label">Description <span class="req">*</span></label>
                     <textarea name="description" rows="3"
-                        placeholder="A brief, appetizing description..."
-                        class="ft {{ $errors->has('description') ? 'err' : '' }}">{{ old('description') }}</textarea>
+                        placeholder="A mouthwatering and affordable meal to put something in yout stomach [caution: do not make everyday]"
+                        class="ft {{ $errors->has('description') ? 'err' : '' }}" x-ref="description">{{ old('description') }}</textarea>
                     @error('description')<p class="err-msg">{{ $message }}</p>@enderror
                 </div>
 
@@ -300,19 +379,19 @@
                     <div class="field-group">
                         <label class="field-label">Prep Time (min) <span class="req">*</span></label>
                         <input type="number" name="prep_time" value="{{ old('prep_time') }}" min="0"
-                            placeholder="15" class="fi {{ $errors->has('prep_time') ? 'err' : '' }}">
+                            placeholder="15" class="fi {{ $errors->has('prep_time') ? 'err' : '' }}" x-ref="prep_time">
                         @error('prep_time')<p class="err-msg">{{ $message }}</p>@enderror
                     </div>
                     <div class="field-group">
                         <label class="field-label">Cook Time (min) <span class="req">*</span></label>
                         <input type="number" name="cook_time" value="{{ old('cook_time') }}" min="0"
-                            placeholder="30" class="fi {{ $errors->has('cook_time') ? 'err' : '' }}">
+                            placeholder="30" class="fi {{ $errors->has('cook_time') ? 'err' : '' }}" x-ref="cook_time">
                         @error('cook_time')<p class="err-msg">{{ $message }}</p>@enderror
                     </div>
                     <div class="field-group">
                         <label class="field-label">Difficulty <span class="req">*</span></label>
-                        <select name="difficulty" class="fs">
-                            @foreach(['easy' => '🟢 Easy', 'medium' => '🟡 Medium', 'hard' => '🔴 Hard'] as $value => $label)
+                        <select name="difficulty" class="fs" x-ref="difficulty">
+                            @foreach(['easy' => 'Light work', 'medium' => 'A bit of sweating', 'hard' => 'Culinary class wars level'] as $value => $label)
                                 <option value="{{ $value }}" {{ old('difficulty','easy') === $value ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
@@ -324,7 +403,9 @@
                     <div class="upload-zone">
                         <input type="file" name="image" accept="image/*"
                             @change="filename = $event.target.files[0]?.name ?? ''">
-                        <span class="upload-icon">📷</span>
+                        <span class="upload-icon"><span class="material-symbols-outlined">
+upload
+</span></span>
                         <p class="upload-text">Click to upload a photo</p>
                         <p class="upload-hint">JPEG, PNG, WebP — max 2 MB</p>
                         <p class="upload-filename" x-show="filename" x-text="filename"></p>
@@ -339,37 +420,34 @@
                 <p class="step-desc">Help people find your recipe</p>
 
                 <div class="cat-grid">
-                    @foreach($categoryTypes as $typeKey => $typeMeta)
-                        <div>
-                            <label class="cat-type-label tl-{{ $typeKey }}">{{ $typeMeta['label'] }}</label>
-                            <select
-                                x-model="selectedType['{{ $typeKey }}']"
-                                @change="addCategory('{{ $typeKey }}')"
-                                class="fs cs-{{ $typeKey }}"
-                            >
-                                <option value="">Pick {{ $typeMeta['label'] }}…</option>
-                                @foreach($groupedCategories[$typeKey] ?? [] as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    @php $ordering = ['complexity', 'status', 'type', 'protein', 'time']; @endphp
+                    @foreach($ordering as $typeKey)
+                        @if(isset($categoryTypes[$typeKey]))
+                            @php $typeMeta = $categoryTypes[$typeKey]; @endphp
+                            <div>
+                                <label class="cat-type-label tl-{{ $typeKey }}">{{ $typeMeta['label'] }}</label>
+                                <div class="category-options">
+                                    <template x-for="category in allCategories.filter(c => c.type === '{{ $typeKey }}')" :key="category.id">
+                                        <button
+                                            type="button"
+                                            class="cat-chip"
+                                            :class="{ 'cat-chip-selected': selectedCategories.some(c => c.id === category.id) }"
+                                            @click="toggleCategory(category)">
+                                            <span x-text="category.name"></span>
+                                            <span class="cat-chip-remove" x-show="selectedCategories.some(c => c.id === category.id)">✕</span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
 
-                <div class="tags-box">
-                    <template x-for="category in selectedCategories" :key="category.id">
-                        <span class="cat-tag" :class="'tag-' + category.type">
-                            <span x-text="category.name"></span>
-                            <button type="button" class="tag-x" @click="removeCategory(category.id)">Remove</button>
-                            <input type="hidden" name="categories[]" :value="category.id">
-                        </span>
-                    </template>
-                    <span x-show="selectedCategories.length === 0"
-                        style="font-size:0.75rem;color:#c4a882;padding:0.125rem 0.25rem;">
-                        No categories selected yet
-                    </span>
-                </div>
-                <p class="tags-hint">Select options above — they appear as removable tags. Categories are optional.</p>
+                <template x-for="category in selectedCategories" :key="category.id">
+                    <input type="hidden" name="categories[]" :value="category.id">
+                </template>
+
+                <p class="tags-hint">Click tags to select / deselect. Selected tags are highlighted with inline remove icon.</p>
 
                 @error('categories')<p class="err-msg">{{ $message }}</p>@enderror
             </div>
@@ -455,6 +533,25 @@
 
         </form>
     </div>
+
+    {{-- Error Modal Component --}}
+    <template x-if="showErrorModal">
+    <div
+        style="position:fixed; inset:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999;"
+        @click.self="showErrorModal = false"
+        @keydown.escape.window="showErrorModal = false"
+    >
+        <div style="background:#fff; border-radius:1rem; border:1px solid #e5e5e5; box-shadow:0 8px 32px rgba(0,0,0,0.18); max-width:420px; width:90%; padding:2rem; text-align:center;" @click.stop>
+            <h3 style="margin:0 0 0.75rem; color:#c00; font-size:1.1rem; font-weight:700;">Please fix the following</h3>
+            <p style="margin:0 0 1.5rem; color:#444; font-size:0.95rem; line-height:1.5;" x-text="errorMessage"></p>
+            <button
+                @click="showErrorModal = false"
+                style="background:#000; color:#fff; border:none; border-radius:0.5rem; padding:0.65rem 1.35rem; cursor:pointer; font-size:0.9rem; font-weight:600;">
+                OK
+            </button>
+        </div>
+    </div>
+</template>
 </div>
 
 @endsection

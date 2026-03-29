@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Step;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class RecipeController extends Controller
@@ -51,14 +52,14 @@ class RecipeController extends Controller
     // STORE - Save new recipe to database
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'title'           => 'required|string|max:255',
             'description'     => 'required|string',
             'prep_time'       => 'required|integer|min:0',
             'cook_time'       => 'required|integer|min:0',
             'difficulty'      => 'required|in:easy,medium,hard',
             'image'           => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'categories'      => 'nullable|array',
+            'categories'      => 'nullable|array|max:20',
             'categories.*'    => 'exists:categories,id',
             'ingredients'     => 'required|array|min:1',
             'ingredients.*.name'   => 'required|string|max:255',
@@ -66,45 +67,90 @@ class RecipeController extends Controller
             'steps'           => 'required|array|min:1',
             'steps.*.title'   => 'required|string|max:255',
             'steps.*.instruction' => 'required|string',
-        ]);
+        ];
 
-        // Handle image upload
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('recipes', 'public');
+        $messages = [
+            'title.required' => 'The recipe title is required.',
+            'description.required' => 'Please provide a short description.',
+            'prep_time.min' => 'Prep time must be 0 or greater.',
+            'cook_time.min' => 'Cook time must be 0 or greater.',
+            'difficulty.in' => 'Select a valid difficulty level (easy, medium, hard).',
+            'categories.max' => 'You can select up to 20 categories.',
+            'ingredients.required' => 'At least one ingredient is required.',
+            'steps.required' => 'At least one step is required.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($request->filled('ingredients')) {
+                $names = array_column($request->input('ingredients'), 'name');
+                if (count($names) !== count(array_unique($names))) {
+                    $validator->errors()->add('ingredients', 'Ingredient names must be unique.');
+                }
+            }
+            if ($request->filled('steps')) {
+                $titles = array_column($request->input('steps'), 'title');
+                if (count($titles) !== count(array_unique($titles))) {
+                    $validator->errors()->add('steps', 'Step titles must be unique.');
+                }
+            }
+        });
+
+        if ($validator->fails()) {
+            session()->flash('error', 'You need to fill out the required fields.');
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // Create the recipe
-        $recipe = Recipe::create([
-            'title'       => $validated['title'],
-            'description' => $validated['description'],
-            'prep_time'   => $validated['prep_time'],
-            'cook_time'   => $validated['cook_time'],
-            'difficulty'  => $validated['difficulty'],
-            'image_path'  => $imagePath,
-        ]);
+        $validated = $validator->validated();
 
-        // Attach categories
-        if (!empty($validated['categories'])) {
-            $recipe->categories()->sync($validated['categories']);
-        }
+        try {
+            // Handle image upload
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('recipes', 'public');
+            }
 
-        // Create ingredients
-        foreach ($validated['ingredients'] as $ingredient) {
-            $recipe->ingredients()->create($ingredient);
-        }
-
-        // Create steps with order
-        foreach ($validated['steps'] as $index => $step) {
-            $recipe->steps()->create([
-                'order'       => $index + 1,
-                'title'       => $step['title'],
-                'instruction' => $step['instruction'],
+            // Create the recipe
+            $recipe = Recipe::create([
+                'title'       => $validated['title'],
+                'description' => $validated['description'],
+                'prep_time'   => $validated['prep_time'],
+                'cook_time'   => $validated['cook_time'],
+                'difficulty'  => $validated['difficulty'],
+                'image_path'  => $imagePath,
             ]);
-        }
 
-        return redirect()->route('recipes.show', $recipe)
-            ->with('success', 'Recipe created successfully!');
+            // Attach categories
+            if (!empty($validated['categories'])) {
+                $recipe->categories()->sync($validated['categories']);
+            }
+
+            // Create ingredients
+            foreach ($validated['ingredients'] as $ingredient) {
+                $recipe->ingredients()->create($ingredient);
+            }
+
+            // Create steps with order
+            foreach ($validated['steps'] as $index => $step) {
+                $recipe->steps()->create([
+                    'order'       => $index + 1,
+                    'title'       => $step['title'],
+                    'instruction' => $step['instruction'],
+                ]);
+            }
+
+            return redirect()->route('recipes.show', $recipe)
+                ->with('success', 'Recipe created successfully!');
+
+        } catch (\Exception $e) {
+            logger()->error('Recipe create failed: '.$e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'There was an unexpected issue creating your recipe. Please try again.');
+        }
     }
 
     // SHOW - Display a single recipe
