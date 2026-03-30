@@ -11,20 +11,23 @@
 @media (max-width: 900px) { .recipe-hero { grid-template-columns: 1fr; } }
 .recipe-title { font-family: 'Kiwisoda', sans-serif; font-size: 3rem; margin: 0 0 0.5rem; line-height: 1.1; }
 .recipe-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-.recipe-tag { border-radius: 999px; border: 1px solid #000; padding: 0.25rem 0.8rem; font-size: 0.8rem; font-weight: 700; background: #fefff0; }
+.recipe-tag { border-radius: 999px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 700; }
 .recipe-description { font-size: 1.2rem; margin-bottom: 1.25rem; color: #111; max-width: 80%; }
 .recipe-meta { font-size: 1rem; color: #333; margin-bottom: 1.25rem; }
 .recipe-meta p { margin: 0.18rem 0; }
-.btn-cook { background: #7dff5f; color: #000; border: none; border-radius: 999px; padding: 0.8rem 1.6rem; font-weight: 700; cursor: pointer; transition: transform .2s ease; }
-.btn-cook:hover { transform: translateY(-1px); background: #57d63f; }
+#step-prev {background: #888; color: #fff;}
+#step-prev:hover { background: #666; }
+.btn-cook { border: none; border-radius: 999px; padding: 0.8rem 1.6rem; font-weight: 700; cursor: pointer; transition: transform .2s ease; }
+.btn-cook:hover { transform: translateY(-1px); }
 .recipe-image { width: 100%; border: 2px solid #000; border-radius: 1rem; object-fit: cover; height: 340px; }
 .section-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
 @media (max-width: 900px) { .section-row { grid-template-columns: 1fr; } }
-.section-box { border: 2px solid #000; border-radius: 1rem; overflow: hidden; }
+.section-box { border: 2px solid #000; border-radius: 1rem; overflow: hidden; height: fit-content; }
+.section-box:not(.process) { position: sticky; top: 2rem; z-index: 10; }
 .section-box.process { border: none; }
 .section-heading { background: #fff; border-bottom: 2px solid #000; padding: 0.75rem 1rem; font-weight: 800; font-size: 1.25rem; }
 .section-box.process .section-heading { border-bottom: none; }
-.section-body { padding: 1rem; }
+.section-body { padding: 1rem 1rem 50px 1rem; height: fit-content; }
 .sidebar-indicator { position: absolute; left: -25px; top: 50%; transform: translateY(-50%); font-size: 2.5rem; color: #000; }
 </style>
 
@@ -89,8 +92,44 @@
                 </div>
 
                 <div class="recipe-tags">
+                    @php
+                        $categoryColors = [
+                            // Complexity
+                            'no-sweat' => ['bg' => 'bg-red-100', 'text' => 'text-red-800'],
+                            'busy-hands' => ['bg' => 'bg-red-100', 'text' => 'text-red-800'],
+                            'culinary-class-wars' => ['bg' => 'bg-red-100', 'text' => 'text-red-800'],
+                            // Time
+                            'fast-and-furious' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-800'],
+                            'one-kdrama-episode' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-800'],
+                            'one-piece-arc' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-800'],
+                            // Type (Meal/Dish)
+                            'vegetables' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'dessert' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'soup' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'bread' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'breakfast' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'dinner' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            'lunch' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+                            // Protein
+                            'chicken' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'pork' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'beef' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'fish' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'egg' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'beans' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            'none' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+                            // Status
+                            'first-time' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
+                            'classic' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
+                            'mastered' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
+                        ];
+                        $getCategoryStyle = function($slug) use ($categoryColors) {
+                            return $categoryColors[$slug] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-800'];
+                        };
+                    @endphp
                     @foreach($recipe->categories as $category)
-                        <span class="recipe-tag">{{ $category->name }}</span>
+                        @php $style = $getCategoryStyle($category->slug); @endphp
+                        <span class="recipe-tag {{ $style['bg'] }} {{ $style['text'] }}">{{ $category->name }}</span>
                     @endforeach
                 </div>
 
@@ -181,7 +220,7 @@
 
             {{-- Footer buttons (always at bottom) --}}
             <div class="flex items-center justify-between p-4 border-t border-gray-200 shrink-0">
-                <button id="step-prev" class="btn-cook bg-gray-900 text-white">Previous</button>
+                <button id="step-prev" class="btn-cook">Previous</button>
                 <button id="step-next" class="btn-cook">Next</button>
             </div>
         </div>

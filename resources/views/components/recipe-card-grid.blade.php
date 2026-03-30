@@ -1,17 +1,43 @@
 @props(['recipe'])
 
 @php
-    $tagPalette = [
-        ['bg' => 'bg-pink-100', 'text' => 'text-pink-800'],
-        ['bg' => 'bg-emerald-100', 'text' => 'text-emerald-800'],
-        ['bg' => 'bg-sky-100', 'text' => 'text-sky-800'],
-        ['bg' => 'bg-violet-100', 'text' => 'text-violet-800'],
-        ['bg' => 'bg-amber-100', 'text' => 'text-amber-800'],
-        ['bg' => 'bg-rose-100', 'text' => 'text-rose-800'],
+    $categoryColors = [
+        // Complexity
+        'no-sweat' => ['bg' => 'bg-red-100', 'text' => 'text-red-800'],
+        'busy-hands' => ['bg' => 'bg-red-100', 'text' => 'text-red-800'],
+        'culinary-class-wars' => ['bg' => 'bg-red-100', 'text' => 'text-red-800'],
+
+        // Time
+        'fast-and-furious' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-800'],
+        'one-kdrama-episode' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-800'],
+        'one-piece-arc' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-800'],
+
+        // Type (Meal/Dish)
+        'vegetables' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+        'dessert' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+        'soup' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+        'bread' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+        'breakfast' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+        'dinner' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+        'lunch' => ['bg' => 'bg-green-100', 'text' => 'text-green-800'],
+
+        // Protein
+        'chicken' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+        'pork' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+        'beef' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+        'fish' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+        'egg' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+        'beans' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+        'none' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800'],
+
+        // Status
+        'first-time' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
+        'classic' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
+        'mastered' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-800'],
     ];
 
-    $tagStyle = function($index) use ($tagPalette) {
-        return $tagPalette[$index % count($tagPalette)];
+    $getCategoryStyle = function($slug) use ($categoryColors) {
+        return $categoryColors[$slug] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-800'];
     };
 @endphp
 
@@ -35,8 +61,8 @@
                         $hiddenCount = max(0, $totalTags - $maxTags);
                     @endphp
 
-                    @foreach($visibleTags as $idx => $category)
-                        @php $style = $tagStyle($idx); @endphp
+                    @foreach($visibleTags as $category)
+                        @php $style = $getCategoryStyle($category->slug); @endphp
                         <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $style['bg'] }} {{ $style['text'] }}">
                             {{ $category->name }}
                         </span>

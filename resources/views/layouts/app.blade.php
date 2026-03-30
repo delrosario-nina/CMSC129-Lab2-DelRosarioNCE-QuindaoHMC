@@ -148,7 +148,7 @@
         <div class="content-shell mx-auto px-6 py-4 flex items-center justify-between h-full">
 
             {{-- Delete icon (upper left) --}}
-            <a href="{{ route('recipes.trash') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-red-500" title="Trash">delete_history</a>
+            <a href="{{ route('recipes.trash') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-red-500" title="Recipe Graveyard">delete_history</a>
 
             {{-- Centered Logo --}}
             <div class="relative inline-block group">

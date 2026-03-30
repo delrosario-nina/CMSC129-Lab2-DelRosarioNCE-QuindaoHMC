@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Trash')
+@section('title', 'Recipe Graveyard')
 
 @section('content')
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">🗑 Trash</h1>
+    <div class="flex flex-col items-start mb-8">
         <a href="{{ route('recipes.index') }}"
-           class="text-amber-500 hover:text-amber-600">← Back to Recipes</a>
+           class="text-gray-500 hover:text-gray-600 mb-4">← Back to Recipes</a>
+        <h1 class="text-3xl font-bold text-gray-800">🪦 Recipe Graveyard</h1>
     </div>
 
     @if($recipes->isEmpty())
@@ -18,35 +18,37 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($recipes as $recipe)
                 <div x-data="{ showRestore: false, showDelete: false }"
-                     class="bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden opacity-75">
+                     class="flex flex-col">
+                    <div class="bg-white rounded-t-xl shadow-sm border border-red-100 border-b-0 overflow-hidden opacity-75">
 
-                    @if($recipe->image_path)
-                        <img src="{{ Storage::url($recipe->image_path) }}"
-                             alt="{{ $recipe->title }}"
-                             class="w-full h-48 object-cover grayscale">
-                    @else
-                        <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
-                            <span class="text-5xl grayscale">🍽️</span>
+                        @if($recipe->image_path)
+                            <img src="{{ Storage::url($recipe->image_path) }}"
+                                 alt="{{ $recipe->title }}"
+                                 class="w-full h-48 object-cover grayscale">
+                        @else
+                            <div class="w-full h-48 bg-gray-100 flex items-center justify-center">
+                                <span class="text-5xl grayscale">🍽️</span>
+                            </div>
+                        @endif
+
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg text-gray-500 mb-1">{{ $recipe->title }}</h3>
+                            <p class="text-gray-400 text-xs mb-4">
+                                Deleted {{ $recipe->deleted_at->diffForHumans() }}
+                            </p>
                         </div>
-                    @endif
+                    </div>
 
-                    <div class="p-4">
-                        <h3 class="font-bold text-lg text-gray-500 mb-1">{{ $recipe->title }}</h3>
-                        <p class="text-gray-400 text-xs mb-4">
-                            Deleted {{ $recipe->deleted_at->diffForHumans() }}
-                        </p>
-
+                    <div class="bg-white rounded-b-xl shadow-sm border border-red-100 border-t-0 overflow-hidden p-4">
                         <div class="flex gap-2">
                             {{-- Restore button --}}
                             <button type="button" @click="showRestore = true"
-                                class="w-full bg-green-500 text-white text-sm py-2 rounded-lg hover:bg-green-600 transition">
-                                ♻️ Restore
+                                class="w-full bg-green-500 text-white text-sm py-2 rounded-lg hover:bg-green-600 hover:font-bold transition"> Restore
                             </button>
 
                             {{-- Force delete button --}}
                             <button type="button" @click="showDelete = true"
-                                class="border border-red-400 text-red-400 text-sm px-3 py-2 rounded-lg hover:bg-red-50 transition">
-                                🗑 Delete Forever
+                                class="border border-red-400 text-red-400 text-sm px-3 py-2 rounded-lg hover:bg-red-200 hover:font-bold transition"> Delete Forever
                             </button>
                         </div>
                     </div>
