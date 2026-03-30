@@ -84,7 +84,7 @@
                                 confirm
                                 title="Move to Trash?"
                                 message="Move '{{ $recipe->title }}' to trash? You can restore it later."
-                                confirmText="Yes, move"
+                                confirmText="Yes"
                                 cancelText="Cancel"
                             />
                         </template>

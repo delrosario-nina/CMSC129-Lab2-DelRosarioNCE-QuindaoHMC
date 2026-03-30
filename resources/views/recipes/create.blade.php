@@ -326,7 +326,7 @@
         prevStep() { if (this.currentStep > 1) this.currentStep--; },
     }">
 
-        <a href="{{ route('recipes.index') }}" class="back-link">Back to Recipes</a>
+        <a href="{{ route('recipes.index') }}" class="back-link">Back to diary</a>
 
         {{-- ── Stepper Header ── --}}
         <div class="stepper-header">
@@ -370,7 +370,7 @@
                 <div class="field-group">
                     <label class="field-label">Description <span class="req">*</span></label>
                     <textarea name="description" rows="3"
-                        placeholder="A mouthwatering and affordable meal to put something in yout stomach [caution: do not make everyday]"
+                        placeholder="e.g. A mouthwatering and affordable meal to put something in your stomach [caution: do not make everyday]"
                         class="ft {{ $errors->has('description') ? 'err' : '' }}" x-ref="description">{{ old('description') }}</textarea>
                     @error('description')<p class="err-msg">{{ $message }}</p>@enderror
                 </div>

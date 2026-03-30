@@ -13,7 +13,7 @@
 <div class="field-group">
     <label class="field-label">Description <span class="required">*</span></label>
     <textarea name="description" rows="3"
-        placeholder="A mouthwatering and affordable meal to put something in yout stomach [caution: do not make everyday]"
+        placeholder="e.g. A mouthwatering and affordable meal to put something in your stomach [caution: do not make everyday]"
         class="form-textarea {{ $errors->has('description') ? 'error' : '' }}">{{ old('description') }}</textarea>
     @error('description')<p class="error-msg">{{ $message }}</p>@enderror
 </div>
