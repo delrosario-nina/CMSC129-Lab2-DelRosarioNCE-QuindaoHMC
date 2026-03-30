@@ -1,59 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍽️ Recipe Diary
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A personal recipe management web app built with **Laravel 12** for everyday cooking needs. In partial fulfillment of academic requirements for **CMSC 129** at the **University of the Philippines Visayas** by Nina Claudia Del Rosario and Hansen Maeve Quindao.
 
-## About Laravel
+## ✨ Features
+* **CRUD:** Create, read, edit, and delete recipes
+* **Step-by-Step Cook Mode:** An interface modal that goes over each process step by step
+* **Tags:** Categorize recipes by Complexity, Time, Type, Protein, and Mastery Status
+* **Soft Delete:** Restore or permanently delete your recipes in the Recipe Graveyard (Trash)
+* **File Upload with Storage Management:** Add images to all of your recipes
+* **Personalization:** Editable diary name saved in `localStorage`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Installation & Setup
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **Prerequisites**
+* PHP 8.2+
+* Composer
+* Node.js 20+ & npm
+* **PostgreSQL** installed and running
 
-## Learning Laravel
+#### **1. Clone & Install**
+```bash
+git clone https://github.com/delrosario-nina/CMSC129-Lab2-DelRosarioNCE-QuindaoHMC.git
+cd your-repo-name
+composer install
+npm install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+#### **2. Database Setup (PostgreSQL)**
+- Open PostgreSQL terminal (`psql`)
+- Create a new database for the project:   
+    ```sql
+    CREATE DATABASE ninas_recipe_diary;
+    ```
+- Copy the environment file:   
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+- Update your `.env` file with your PostgreSQL credentials:   
+    ```env
+    DB_CONNECTION=pgsql
+    DB_HOST=127.0.0.1
+    DB_PORT=5432
+    DB_DATABASE=ninas_recipe_diary
+    DB_USERNAME=YOUR_USERNAME
+    DB_PASSWORD=YOUR_PASSWORD
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### **3. Migrations & Assets**
+Commands to set up the table structures and seed initial data:
+```bash
+# Run migrations and pre-fill categories
+php artisan migrate --seed
 
-## Laravel Sponsors
+# Storage link for image uploads
+php artisan storage:link
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Build the frontend assets
+npm run build
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🧑‍💻 Running Locally
 
-## Contributing
+1.  **Terminal 1 (Server):** `php artisan serve`
+2.  **Terminal 2 (Queue):** `php artisan queue:listen` (Handles background tasks)
+3.  **Terminal 3 (Vite):** `npm run dev` (Hot-reloads CSS/JS)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+APP URL: **`http://localhost:8000`** 
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🏗️ MVC Architecture & Project Structure
 
-## Security Vulnerabilities
+### **1. Models**
+Handles database interactions, data integrity, and relationships.
+| File | Responsibility |
+| :--- | :--- |
+| `app/Models/Recipe.php` | **Core Model**; manages `SoftDeletes` and defines relationships with Ingredients, Steps, and Categories |
+| `app/Models/Category.php` | Handles the tags (Protein, Complexity, Time, Type, Status) |
+| `app/Models/Ingredient.php` | Manages the list of items for each recipe |
+| `app/Models/Step.php` | Stores instructions |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### **2. Views**
+Built using **Blade** and **Tailwind CSS v4**, for UI/UX
+| Directory / File | Responsibility |
+| :--- | :--- |
+| `resources/views/layouts/app.blade.php` | **Master Template**; for global navigation and CSS/JS injections. |
+| `resources/views/recipes/index.blade.php` | **Homepage** / main grid view for all recipes |
+| `resources/views/recipes/show.blade.php` | **Cook Mode** / Detailed step by step view |
+| `resources/views/components/` | Reusable UI elements for design consistency |
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### **3. Controllers**
+Handles the communication between data and interface
+| File | Responsibility |
+| :--- | :--- |
+| `app/Http/Controllers/RecipeController.php` | **Primary Controller**; handles recipe retrieval, form validation, image upload processing, routing |
