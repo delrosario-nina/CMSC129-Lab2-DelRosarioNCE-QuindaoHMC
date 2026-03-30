@@ -5,7 +5,7 @@
 @section('content')
 
 <style>
-.recipe-page { font-family: 'DM Sans', sans-serif; max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+.recipe-page { font-family: 'DM Sans', sans-serif; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 1.5rem 1.5rem; }
 .recipe-page .back-link { display: inline-block; margin-bottom: 1rem; color: #444; font-weight: 500; }
 .recipe-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 @media (max-width: 900px) { .recipe-hero { grid-template-columns: 1fr; } }
@@ -31,10 +31,17 @@
 @php
     // Difficulty → star emojis
     $stars = match($recipe->difficulty) {
-        'easy'   => '⭐',
-        'medium' => '⭐⭐',
-        'hard'   => '⭐⭐⭐',
+        'easy'   => '★✩✩ Light Work',
+        'medium' => '★★✩ A Bit of Sweating',
+        'hard'   => '★★★ Culinary Class Wars Level',
         default  => $recipe->difficulty,
+    };
+
+    $difficultyStyle = match($recipe->difficulty) {
+        'easy'   => 'background-color: #dcfce7; color: #166534; border: 1.5px solid #86efac;',
+        'medium' => 'background-color: #fef9c3; color: #854d0e; border: 1.5px solid #fde047;',
+        'hard'   => 'background-color: #fee2e2; color: #991b1b; border: 1.5px solid #fca5a5;',
+        default  => 'background-color: #f3f4f6; color: #374151;',
     };
 
     // Prev / next for arrow nav (simple: sibling records by id)
@@ -92,7 +99,10 @@
                 <div class="recipe-meta">
                     <p><strong>Prep Time:</strong> {{ $recipe->prep_time }} minutes</p>
                     <p><strong>Cooking Time:</strong> {{ $recipe->cook_time }} minutes</p>
-                    <p><strong>Difficulty:</strong> {{ $stars }}</p>
+                    <p class="flex items-center gap-2">
+                        <span><strong>Difficulty:</strong></span>
+                        <span class="font-bold px-3 py-1 rounded-full" style="{{ $difficultyStyle }}"> {{ $stars }} </span>
+                    </p>
                 </div>
 
                 <button id="step-view" class="btn-cook" type="button">Let’s Cook!</button>
@@ -133,7 +143,7 @@
                             @foreach($recipe->steps as $step)
                                 <li>
                                     <p class="font-bold">Step {{ $step->order }}: {{ $step->title }}</p>
-                                    <p class="text-gray-700">{{ $step->instruction }}</p>
+                                    <p class="text-gray-700">{!! nl2br(e($step->instruction)) !!}</p>
                                 </li>
                             @endforeach
                         </ol>
@@ -155,17 +165,22 @@
     </script>
 
     {{-- Step-by-step full-screen modal (refined) --}}
-    <div id="step-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
-        <div class="bg-white w-full h-full max-w-full max-h-full overflow-hidden">
-            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+    <div id="step-modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center z-50">
+        <div class="bg-white w-11/12 max-w-5xl h-[90vh] overflow-hidden flex flex-col">
+            {{-- Header --}}
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 shrink-0">
                 <div class="flex flex-col">
                     <h1 class="text-3xl font-bold" style="font-family: 'Kiwisoda', sans-serif;">{{ $recipe->title }}</h1>
                     <p class="text-sm text-gray-500">Step <span id="step-number">1</span> of {{ $recipe->steps->count() }}</p>
                 </div>
                 <button id="step-modal-close" class="text-2xl font-bold px-2">✕</button>
             </div>
-            <div class="p-8 h-[calc(100vh-132px)] overflow-y-auto" id="step-content"></div>
-            <div class="flex items-center justify-between p-4 border-t border-gray-200">
+
+            {{-- Content (fills remaining space) --}}
+            <div class="flex-1 overflow-y-auto p-8" id="step-content"></div>
+
+            {{-- Footer buttons (always at bottom) --}}
+            <div class="flex items-center justify-between p-4 border-t border-gray-200 shrink-0">
                 <button id="step-prev" class="btn-cook bg-gray-900 text-white">Previous</button>
                 <button id="step-next" class="btn-cook">Next</button>
             </div>
@@ -197,23 +212,48 @@
                 }
 
                 var step = steps[currentStep];
+                var isFirstStep = currentStep === 0;
+                var isLastStep = currentStep === steps.length - 1;
+
                 stepNumber.textContent = currentStep + 1;
                 stepContent.innerHTML = '<h3 class="text-2xl font-bold mb-3">Step ' + step.order + ': ' + step.title + '</h3>' +
                     '<p class="text-gray-700 leading-relaxed">' + step.instruction.replace(/\n/g, '<br/>') + '</p>';
 
-                prevBtn.disabled = currentStep === 0;
-                nextBtn.disabled = currentStep === steps.length - 1;
+                // Update previous button
+                prevBtn.disabled = isFirstStep;
+                if (isFirstStep) {
+                    prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    prevBtn.textContent = 'Previous';
+                } else {
+                    prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    var prevStep = steps[currentStep - 1];
+                    prevBtn.textContent = 'Previous: ' + prevStep.title;
+                }
+
+                // Update next button
+                if (isLastStep) {
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    nextBtn.textContent = 'Finish';
+                } else {
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    var nextStep = steps[currentStep + 1];
+                    nextBtn.textContent = 'Next: ' + nextStep.title;
+                }
             }
 
             function toggleModal(show) {
                 if (show) {
                     modal.classList.remove('hidden');
                     modal.classList.add('flex');
+                    document.body.classList.add('overflow-hidden');
                     currentStep = 0;
                     renderStep();
                 } else {
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
                 }
             }
 
@@ -240,6 +280,9 @@
                     if (currentStep < steps.length - 1) {
                         currentStep += 1;
                         renderStep();
+                    } else if (currentStep === steps.length - 1) {
+                        // Close modal on "Finish"
+                        toggleModal(false);
                     }
                 });
             }

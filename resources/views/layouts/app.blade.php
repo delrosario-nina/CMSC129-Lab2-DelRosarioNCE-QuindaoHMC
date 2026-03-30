@@ -124,6 +124,7 @@
             border-radius: 2rem;
             padding: 0.5rem 0.75rem;
             display: inline-block;
+            transition: padding-right 0.2s ease;
         }
 
         /* ─── Sidebar (removed and replaced by header icons) ────────────────────────────────────── */
@@ -150,9 +151,36 @@
             <a href="{{ route('recipes.trash') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-red-500" title="Trash">delete_history</a>
 
             {{-- Centered Logo --}}
-            <a href="{{ route('recipes.index') }}" class="nav-logo-box">
-                <span class="diary-display text-3xl text-gray-900 leading-none">Nina's Recipe Diary</span>
-            </a>
+            <div class="relative inline-block group">
+                <a href="{{ route('recipes.index') }}" class="nav-logo-box" id="logo-link">
+                    <span class="diary-display text-4xl text-gray-900 leading-none" id="diary-title">Nina's Recipe Diary</span>
+                    {{-- Edit icon inside the border, expands border on hover --}}
+                    <span id="edit-title-btn"
+                        class="material-symbols-outlined inline-block align-top ml-0 w-0 overflow-hidden opacity-0 group-hover:w-7 group-hover:ml-2 group-hover:opacity-100 text-2xl text-gray-500 hover:text-gray-800 transition-all duration-200 cursor-pointer"
+                        title="Edit">
+                        edit
+                    </span>
+                </a>
+            </div>
+
+            {{-- Edit Logo Modal --}}
+            <div id="edit-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+                <div class="bg-white rounded-xl p-6 shadow-lg w-80">
+                    <h2 class="diary-body font-bold mb-3 text-gray-800">Edit Diary Name</h2>
+                    <input id="diary-name-input" type="text" value="Nina's Recipe Diary"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-2 diary-body focus:outline-none focus:ring-2 focus:ring-amber-400 mb-4">
+                    <div class="flex gap-2">
+                        <button id="save-title-btn"
+                                class="bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition diary-body font-bold flex-1">
+                            Save
+                        </button>
+                        <button id="cancel-title-btn"
+                                class="border border-gray-300 text-gray-600 px-4 py-2 rounded-lg hover:bg-gray-50 transition diary-body flex-1">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             {{-- Add icon (upper right) --}}
             <a href="{{ route('recipes.create') }}" class="material-symbols-outlined text-2xl text-gray-900 hover:text-amber-700" title="Add Recipe">add</a>
@@ -208,6 +236,44 @@
                 // Removed animation to improve performance
             }
         });
+
+        // Title editing
+        const editBtn = document.getElementById('edit-title-btn');
+        const editModal = document.getElementById('edit-modal');
+        const saveBtn = document.getElementById('save-title-btn');
+        const cancelBtn = document.getElementById('cancel-title-btn');
+        const diaryTitle = document.getElementById('diary-title');
+        const diaryInput = document.getElementById('diary-name-input');
+
+        editBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            diaryInput.value = diaryTitle.textContent;
+            editModal.classList.remove('hidden');
+            editModal.classList.add('flex');
+            diaryInput.focus();
+        });
+
+        saveBtn.addEventListener('click', function() {
+            const newName = diaryInput.value.trim();
+            if (newName) {
+                diaryTitle.textContent = newName;
+                localStorage.setItem('diaryTitle', newName);
+            }
+            editModal.classList.add('hidden');
+            editModal.classList.remove('flex');
+        });
+
+        cancelBtn.addEventListener('click', function() {
+            editModal.classList.add('hidden');
+            editModal.classList.remove('flex');
+        });
+
+        // Load saved title on page load
+        const savedTitle = localStorage.getItem('diaryTitle');
+        if (savedTitle) {
+            diaryTitle.textContent = savedTitle;
+        }
     </script>
 
 </body>
