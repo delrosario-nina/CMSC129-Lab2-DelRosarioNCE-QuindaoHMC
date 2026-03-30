@@ -2,6 +2,8 @@
 
 A personal recipe management web app built with **Laravel 12** for everyday cooking needs. In partial fulfillment of academic requirements for **CMSC 129** at the **University of the Philippines Visayas** by Nina Claudia Del Rosario and Hansen Maeve Quindao.
 
+![Homepage](resources/assets/Homepage.png "Recipe Diary Homepage")
+
 ## ✨ Features
 * **CRUD:** Create, read, edit, and delete recipes
 * **Step-by-Step Cook Mode:** An interface modal that goes over each process step by step
@@ -64,13 +66,25 @@ npm run build
 
 ---
 
-## 🧑‍💻 Running Locally
+## 🧑‍💻 Run
 
 1.  **Terminal 1 (Server):** `php artisan serve`
 2.  **Terminal 2 (Queue):** `php artisan queue:listen` (Handles background tasks)
 3.  **Terminal 3 (Vite):** `npm run dev` (Hot-reloads CSS/JS)
 
 APP URL: **`http://localhost:8000`** 
+
+---
+
+## 📷 Screenshots
+
+| ![Recipe1](resources/assets/Recipe1.png "Recipe Page") | ![Recipe2](resources/assets/Recipe2.png "Recipe Page") |
+| :---: | :---: |
+| **Recipe Page Overview** | **Recipe Page**: Ingredients and Process  |
+
+| ![CookMode](resources/assets/CookMode.png "Cook Mode") | ![Trash](resources/assets/Trash.png "Trash / Soft Delete") |
+| :---: | :---: |
+| **Cook Mode** | **Recipe Graveyard** |
 
 ---
 
